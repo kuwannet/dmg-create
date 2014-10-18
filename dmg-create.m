@@ -47,10 +47,6 @@ int main ( int argc, const char * argv[] )
         sSourceFolder = [NSString stringWithCString:argv[1] encoding:[NSString defaultCStringEncoding]];
         sFolderName = [sSourceFolder lastPathComponent];
         
-    //	sSourceFolder = [NSString stringWithFormat:@"\"%@\"", sSourceFolder];
-        
-    //	NSLog( @"Source folder: %@", sSourceFolder );
-        
         for ( int i = 2; i < argc; )
         {
             NSString * s = [NSString stringWithCString:argv[i] encoding:[NSString defaultCStringEncoding]];
@@ -76,17 +72,6 @@ int main ( int argc, const char * argv[] )
                         exitWithErrorUsage( @"Too few arguments, missing license file.", -1, YES );
 
                 }
-    //			else if ( [s caseInsensitiveCompare:@"english"] == NSOrderedSame )
-    //			{
-    //				i++;
-    //				//	English license file
-    //				if ( i < argc )
-    //				{
-    //					s = [NSString stringWithCString:argv[i] encoding:[NSString defaultCStringEncoding]];
-    //					
-    //					[dictLanguages setValue:s forKey:@"5002"];
-    //				}
-    //			}
                 else if ( [s caseInsensitiveCompare:@"volname"] == NSOrderedSame )
                 {
                     i++;
@@ -143,9 +128,7 @@ int main ( int argc, const char * argv[] )
                                              @"-format", @"UDBZ", /*@"UDRO",*/ sDMGFile, nil];
             
             NSTask *	dmgTask = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/env" arguments:args];
-        //	NSTask *	dmgTask = [NSTask launchedTaskWithLaunchPath:@"/bin/echo" arguments:args];
             
-        //	[dmgTask setStandardOutput:[NSFileHandle fileHandleWithStandardOutput]];
             [dmgTask waitUntilExit];
             nStatus = [dmgTask terminationStatus];
 
@@ -174,7 +157,6 @@ int main ( int argc, const char * argv[] )
             
             args = [NSArray arrayWithObjects:@"hdiutil", @"udifderez", @"-xml", sDMGFile, nil];
             dmgTask = [[NSTask alloc] init];
-    //		dmgTask = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/env" arguments:args];
             
             [dmgTask setLaunchPath:@"/usr/bin/env"];
             [dmgTask setArguments:args];
@@ -192,9 +174,6 @@ int main ( int argc, const char * argv[] )
                 NSLog( @"Error reading XML properties: %d", nStatus );
                 return nStatus;
             }
-            
-    //		str = [[NSString alloc] initWithData:xmlPropData encoding:NSUTF8StringEncoding];		
-    //		NSLog( @"Got XML properties: %@", str );
             
             NSDictionary *	dmgDict = nil;
             NSMutableDictionary * mergedDict = nil;
@@ -240,15 +219,6 @@ int main ( int argc, const char * argv[] )
             //	make sure we have a mutable dictionary
             mergedDict = [NSMutableDictionary dictionaryWithDictionary:mergedDict];
             
-    //		mergedDict = [NSMutableDictionary dictionaryWithContentsOfFile:@"base.plist"];
-    //		
-    //		if ( mergedDict == nil )
-    //		{
-    //			NSLog( @"Error reading base property list" );
-    //			[pool drain];
-    //			return -1;
-    //		}
-            
             //	merge the dmgDict with the mergedDict
             NSEnumerator *	enumerator = [dmgDict keyEnumerator];
             id key;
@@ -260,9 +230,6 @@ int main ( int argc, const char * argv[] )
                 object = [dmgDict objectForKey:key];
                 [mergedDict setObject:object forKey:key];
             }
-            
-    //		NSLog( @"Merged dictionary:" );
-    //		NSLog( @"%@", [mergedDict description] );
             
             //	create the array of Language dictionaries
             NSMutableArray *	langArray = [NSMutableArray array];
@@ -305,9 +272,6 @@ int main ( int argc, const char * argv[] )
             
             //	Add the language array to the merged Property dict with the key 'RTF '
             [mergedDict setValue:langArray forKey:@"RTF "];
-            
-    //		NSLog( @"Merged dictionary with license(s):" );
-    //		NSLog( @"%@", [mergedDict description] );
             
             //	Now create an XML plist from the merged dictionary
             NSData *	data = nil;
