@@ -295,12 +295,17 @@ int main ( int argc, const char * argv[] )
                 return -1;
             }
             
-            //	write the plist out
-            [data writeToFile:@"dmgProperties.plist" atomically:YES];
+            //	write the plist out to a temporary file
+            NSString * dmgPropertiesFile = [NSString stringWithFormat:@"%@.plist",
+                                            [[NSProcessInfo processInfo] globallyUniqueString]];
+            
+            dmgPropertiesFile = [NSTemporaryDirectory() stringByAppendingPathComponent:dmgPropertiesFile];
+            
+            [data writeToFile:dmgPropertiesFile atomically:YES];
             
             //	now embed the properties into the generated DMG
             //	hdiutil udifrez <sDMGFile> -xml dmgProperties.plist
-            args = [NSArray arrayWithObjects:@"hdiutil", @"udifrez", sDMGFile, @"-xml", @"dmgProperties.plist", nil];
+            args = [NSArray arrayWithObjects:@"hdiutil", @"udifrez", sDMGFile, @"-xml", dmgPropertiesFile, nil];
             
             dmgTask = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/env" arguments:args];
             [dmgTask waitUntilExit];
@@ -329,7 +334,7 @@ int main ( int argc, const char * argv[] )
             //  remove the "dmgProperties.plist" file that we created above
             NSFileManager * manager = [NSFileManager defaultManager];
             
-            [manager removeItemAtPath:@"dmgProperties.plist" error:nil];
+            [manager removeItemAtPath:dmgPropertiesFile error:nil];
         }	
     }
     
