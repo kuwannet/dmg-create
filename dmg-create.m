@@ -324,7 +324,12 @@ int main ( int argc, const char * argv[] )
             {
                 NSLog( @"Error making the DMG internet-enabled: %d", nStatus );
                 return nStatus;
-            }		
+            }
+            
+            //  remove the "dmgProperties.plist" file that we created above
+            NSFileManager * manager = [NSFileManager defaultManager];
+            
+            [manager removeItemAtPath:@"dmgProperties.plist" error:nil];
         }	
     }
     
