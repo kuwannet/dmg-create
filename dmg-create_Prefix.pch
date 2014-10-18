@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'dmg-create' target in the 'dmg-create' project.
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
