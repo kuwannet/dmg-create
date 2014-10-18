@@ -3,7 +3,7 @@
  *  dmg-create
  *
  *  Created by David Thorup on 12/17/09.
- *  Copyright 2009 Dave Thorup, Bibble Labs Inc. All rights reserved.
+ *  Copyright 2009 Dave Thorup. All rights reserved.
  *
  */
 
