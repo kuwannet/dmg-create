@@ -1,0 +1,7 @@
+# Apple filesystem goo
+*.DS_Store
+
+# Xcode folders & files
+xcuserdata/
+xcshareddata/
+project.xcworkspace/
